@@ -1,0 +1,29 @@
+@font-face{
+	font-family: "Roboto";
+	src:url(font/roboto-regular-webfont.woff)format('woff');
+}
+
+*{
+	font-family: "Roboto";
+	box-sizing: border-box;
+}
+
+
+body{
+	box-sizing: border-box;
+	background: black;
+}
+
+header,footer{
+	background-color: pink;
+	padding: 7px;margin: 3px;
+}
+
+h1,p{
+	/*color: grey;*/
+}
+
+
+#section1{
+	background-color: rgba(255, 255, 255, 0.5);
+}

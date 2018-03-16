@@ -13,29 +13,27 @@
 		?>
 
 
-		<?php
-		if(isset($_SESSION["email"])){
-		?>
-		<h3>Personne connecté: <?php echo($_SESSION['pseudo'])?></h3>
-		<h3>Email connecté: <?php echo($_SESSION['email'])?></h3>
-		<p>Numero id :<?php echo($_SESSION['id'])?></p>
 
-		<form action="deconnect.php" method="post">
-			<input type="submit" name="deconnect" value="Deconnexion">
-		</form>
-
+		<br>
+		<h1>Les dernières annonces !:<h1>
 		<?php
-		}else{
-			?>
-			<form action="connexion.php" method="post">
-				<input type="submit" name="connect" value="Connexion">
-			</form>
-			<form action="inscription.php" method="post">
-				<input type="submit" name="connect" value="Inscription">
-			</form>
-			<?php
-		}
-		?>
+	  $query1 = $bdd->prepare('SELECT titre,description,idAnnonce,email FROM annonce ORDER BY idAnnonce DESC');
+    $query1->execute();
+    $query2 = $bdd->prepare('SELECT nom,description,prix,vote,idAnnonce FROM produit ORDER BY idAnnonce DESC');
+    $query2->execute();
+    while($annonce = $query1->fetch()){?>
+      <h3 style="font-size: 20px;margin:0;">Nom: <?= $annonce["titre"]?> Description: <?= $annonce["description"]?> Auteur: <?= $annonce["email"]?></h3>
+    	<?php while($produit = $query2->fetch() AND $annonce["idAnnonce"]==$produit["idAnnonce"]){ ?>
+					          <br>  <p style="font-size: 15px;margin:0;">Nom: <?= $produit["nom"]?>, Description: <?= $produit["description"]?>, Prix: <?=$produit["prix"]?>, Nombre de votes: <?=$produit["vote"]?></p>
+								<?php
+		 				}
+    }
+
+     $query1->closeCursor();
+     $query2->closeCursor();
+    ?>
+
+		<br><br><br><br><br>
 
 		<h1 style="color:red;">Contenu du site, on est bien d'accord?</h1>
 		<h2>rajoutez les idées qu'on avait</h2>
@@ -48,11 +46,7 @@
 		<br>
 		Wow il y aura un carousel geant qui fera toute la taille de la fenetre avec du background ici: AMAZING
 		<br>
-		En dessous un autre carousel plus petit avec une liste d'annonces qui va défiler
-		<br>
-		<h1 style="color: purple;">NOICE</h1>
-		<h1 style="color: lime;">VERY DOGE</h1>
-		oui ce vert fait mal au yeux :)
+		En dessous un autre carousel plus petit avec une liste d'annonces qui va défiler  <p style="color: red; font-size: 20px;">DEJA FAIT IL FAUT CREER DES ANNONCES POUR LES VOIR     Par contre celui des images est toujours à faire MERCI</p>
 
 		<br>
 		<?php

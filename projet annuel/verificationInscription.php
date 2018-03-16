@@ -6,13 +6,14 @@
 	</head>
 	<body>
 		<?php
+		session_start();
 
 		$_POST["pseudo"] = htmlspecialchars($_POST["pseudo"]);
 		$_POST["email"] = htmlspecialchars($_POST["email"]);
 		$_POST["dateNaissance"] = htmlspecialchars($_POST["dateNaissance"]);
 		//$_POST["pays"] = htmlspecialchars($_POST["pays"]);
 		$_POST["motDePasse"] = htmlspecialchars($_POST["motDePasse"]);
-		$_POST["sexe"] = htmlspecialchars($_POST["sexe"]);
+		//$_POST["sexe"] = htmlspecialchars($_POST["sexe"]);
 		$_POST["nom"] = htmlspecialchars($_POST["nom"]);
 		$_POST["prenom"] = htmlspecialchars($_POST["prenom"]);
 		$_POST["adresse"] = htmlspecialchars($_POST["adresse"]);
@@ -66,16 +67,8 @@
 
 			$email = $_POST["email"];
 
-			/*if((in_array($email,$emails))){
-				header("location: inscription.php?errorVe=email deja pris");
-				exit;
-			}*/
-
-
-
-
 			function verifPseudo($pseudo){
-				if (strlen($pseudo)<3 OR strlen($pseudo)>20){
+				if (strlen($pseudo)<3 OR strlen($pseudo)>80){
 					return false;
 				}else{
 					return true;
@@ -102,8 +95,10 @@
 			}
 			*/
 
+
+
 			function verifNom($nom){
-				if (strlen($nom)<3 OR strlen($nom)>20){
+				if (strlen($nom)<3 OR strlen($nom)>80){
 					return false;
 				}else{
 					return true;
@@ -116,7 +111,7 @@
 			}
 
 			function verifPrenom($prenom){
-				if (strlen($prenom)<3 OR strlen($prenom)>20){
+				if (strlen($prenom)<3 OR strlen($prenom)>80){
 					return false;
 				}else{
 					return true;
@@ -129,7 +124,7 @@
 			}
 
 			function verifAdresse($adresse){
-				if (strlen($adresse)<3 OR strlen($adresse)>20){
+				if (strlen($adresse)<3 OR strlen($adresse)>80){
 					return false;
 				}else{
 					return true;
@@ -142,7 +137,7 @@
 			}
 
 			function verifDescription($description){
-				if (strlen($description)<3 OR strlen($description)>20){
+				if (strlen($description)<3 OR strlen($description)>400){
 					return false;
 				}else{
 					return true;
@@ -157,7 +152,7 @@
 
 
 			function verifPassword($password){
-				if (strlen($password)<5 OR strlen($password)>20){
+				if (strlen($password)<5 OR strlen($password)>128){
 					return false;
 				}else{
 					return true;
@@ -166,36 +161,7 @@
 			}
 
 			if(!verifPassword($_POST["motDePasse"])){
-				header("location: inscription.php?errorVe=Mot de passe trop long ou courts");
-				exit;
-			}
-
-			function verifSexe($sexe){
-				if ($sexe>3 OR $sexe<0) {
-					return false;
-				}else{
-					return true;
-				}
-			}
-
-			if(!verifSexe($_POST["sexe"])){
-				header("location: inscription.php?errorVe=sexe");
-				exit;
-			}
-
-
-
-
-			function verifPays($pays){
-				if (strlen($pays)<1 OR strlen($pays)>20){
-					return false;
-				}else{
-					return true;
-				}
-			}
-
-			if(!verifPays($_POST["pays"])){
-				header("location: inscription.php?errorVe=pays");
+				header("location: inscription.php?errorVe=Mot de passe trop long(128 max) ou court(5 min)");
 				exit;
 			}
 
@@ -217,19 +183,17 @@
 
 			//cryptage du MPD
 			function chiffrer($password){
-				//md5(str); deja cracké
-				//clé de salage
-				$salage="Xy6rBI5";
-				//md5($salage.$password.$salage);
-				//sha1(str)
+				$salage="ILOVESANANESXcp5yjO777";
 				return hash("sha512",$password.$salage);
 			}
 
+			//mot de passe crypté
 			$dirtyPassword=chiffrer($_POST["motDePasse"]);
 
+			//insertion du user dans la base de donnée
 			include "config.php";
 
-			$query = $bdd->prepare('INSERT INTO utilisateur (pseudo,motDePasse,email,dateNaissance,pays,sexe,prenom,nom,adresse,description,telephone) VALUES (:pseudo,:password,:email,:dateNaissance,:pays,:sexe,:prenom,:nom,:adresse,:description,:telephone)');
+			$query = $bdd->prepare('INSERT INTO utilisateur (pseudo,motDePasse,email,dateNaissance,pays,sexe,prenom,nom,adresse,description,telephone,isSupprime) VALUES (:pseudo,:password,:email,:dateNaissance,:pays,:sexe,:prenom,:nom,:adresse,:description,:telephone,:isSupprime)');
 			$params = array(
 													'pseudo' => $_POST["pseudo"],
 													'password' => $dirtyPassword,
@@ -241,14 +205,14 @@
 													'nom' => $_POST["nom"],
 													'adresse' => $_POST["adresse"],
 													'description' => $_POST["description"],
-													'telephone' => $_POST["telephone"]
+													'telephone' => $_POST["telephone"],
+													'isSupprime' => "0"
 			);
 			$query->execute($params);
 			$lastId = $bdd->lastInsertid();
 			$query -> closeCursor();
 
-			session_start();
-			//id pseudo
+			//on recupere Quelques données à afficher pour la session
 			$_SESSION["id"]=$lastId;
 			$_SESSION["pseudo"]=$_POST["pseudo"];
 			$_SESSION["email"]=$_POST["email"];

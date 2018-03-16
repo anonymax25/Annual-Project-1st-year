@@ -7,13 +7,14 @@
 	<body>
 		<?php
 		include "config.php";
+		session_start();
 
 		if (!(isset($_POST['email']) && isset($_POST['motDePasse']) && !empty($_POST['email']) && !empty($_POST['motDePasse']))){
 			header("location: connexion.php?errorCo= case non remplie");
 			exit;
 		}else{
 
-
+			echo($_POST["motDePasse"]);
 
 			$query1 = $bdd->prepare('SELECT * FROM utilisateur WHERE email=?');
 			$email = htmlspecialchars($_POST["email"]);
@@ -22,12 +23,12 @@
 			$emails = $query1->fetch();
 			$query1 -> closeCursor();
 
-
 			if(!(in_array($email,$emails))){
 				header("location: connexion.php?errorCo=email invalid");
 				exit;
+			}else if($isSupprime=="1"){
+					header("location: connexion.php?errorCo= Compte Bani RIP");
 			}else{
-
 
 				$query2 = $bdd->prepare('SELECT motDePasse FROM utilisateur WHERE email = :email');
 				$params = array(
@@ -42,11 +43,7 @@
 
 
 				function hashIt($password){
-					//md5(str); deja cracké
-					//clé de salage
-					$salage="Xy6rBI5";
-					//md5($salage.$password.$salage);
-					//sha1(str)
+					$salage="ILOVESANANESXcp5yjO777";
 					return hash("sha512",$password.$salage);
 				}
 
@@ -73,11 +70,21 @@
 				$query4 -> closeCursor();
 				$pseudo=$pseudos[0];
 
-				echo $email;
-				echo "<br>";
-				echo $pseudos[0];
 
-				session_start();
+
+
+				$query5 = $bdd->prepare('SELECT isSupprime FROM utilisateur WHERE email = :email');
+				$params = array(
+					'email' => htmlspecialchars($_POST["email"])
+				);
+				$query5 ->execute($params);
+				$isSupprime = $query5->fetch();
+				$query5 -> closeCursor();
+				$isSupprime=$isSupprimes[0];
+
+
+
+
 				if($dirtyPassword==$password){
 
 					$_SESSION["email"]=$email;

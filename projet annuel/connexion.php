@@ -26,6 +26,13 @@
 			</form>
 		</div>
 		<br>
+		<br>
+		Ou inscrivez vous si vous n'etes pas deja inscrit.
+		<br>
+		<form action="inscription.php" method="post">
+			<input type="submit" name="connect" value="Inscription">
+		</form>
+		<br>
 		<form action="index.php" method="post">
 			<input type="submit" name="adminBack" value="Retour à la page d'accueil">
 		</form>

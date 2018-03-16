@@ -18,7 +18,7 @@
 				Pseudo: <input type="text" name="pseudo" placeholder="Entre 3 et 20 caractères"><br>
 				Nom: <input type="text" name="nom" placeholder="Mettez votre nom"><br>
 				Prénom: <input type="text" name="prenom" placeholder="Mettez votre prénom"><br>
-				e-mail: <input type="text" name="email" placeholder="addresse@nomDuSite.com"><br>
+				e-mail: <input type="text" name="email" placeholder="addresse@nomDuSite.com"> Attention, l'email ne peut pas encore etre changé apres l'inscription. C'est votre identifiant.<br>
 				Mot de Passe: <input type="password" name="motDePasse" placeholder="Entre 5 et 20 caractères"><br>
 				Date de Naissance: <input type="date" name="dateNaissance"><br>
 				Telephone: <input type="text" name="telephone" placeholder="Numero à 10 chiffres"><br>
@@ -46,7 +46,7 @@
 				Acceptez vous de recevoir la Newsletter?<br>
 				Oui: <input type="radio" name="newsletter" checked="checked" value="true"><br>
 				Non: <input type="radio" name="newsletter" value="false"><br>
-				Voulez vous etre vendeur?:
+				Voulez vous etre vendeur?:<br>
 				Oui: <input type="radio" name="vendeur" value="true"><br>
 				Non: <input type="radio" name="vendeur" checked="checked" value="false"><br>
 
@@ -56,7 +56,7 @@
 				<input type="radio" name="sexe" value="2">Femme<br>
 				<input type="radio" name="sexe" value="3">Autre<br>
 				<br>
-				Vous pourrez mettre un avatar sur <br> votreprofil une fois qu'il sera créé.
+				Vous pourrez mettre un avatar sur <br> votre profil une fois qu'il sera créé.
 				<br>
 				<br>
 				<input type="submit" value="Valider"><?php
@@ -67,8 +67,11 @@
 			</form>
 		</div>
 		<br>
-		<form action="index.php" method="post">
-			<input type="submit" name="adminBack" value="Retour à la page d'accueil">
+		<br>
+		Ou connectez vous si vous etes deja inscrit.
+		<br>
+		<form action="connexion.php" method="post">
+			<input type="submit" name="connect" value="Connexion">
 		</form>
 	</section>
 	<br>
